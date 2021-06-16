@@ -1,17 +1,9 @@
 #cloud-config
 
-apt_update: true
-
 runcmd:
- - [ sh, -c, curl -fsSL -o /usr/share/keyrings/salt-archive-keyring.gpg https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest/salt-archive-keyring.gpg ]
- - [ sh, -c, echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest focal main" | tee /etc/apt/sources.list.d/salt.list]
-
-packages:
- - salt-minion
-
-
-salt_minion:
-
-  conf:
-  
-    master: 10.0.0.9
+  - [ sh, -c, 'sudo curl -fsSL -o /usr/share/keyrings/salt-archive-keyring.gpg https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest/salt-archive-keyring.gpg' ]
+  - [ sh, -c, "sudo echo 'deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest focal main' | sudo tee /etc/apt/sources.list.d/salt.list" ]
+  - [ sh, -c, "sudo mkdir /etc/salt" ]
+  - [ sh, -c, "sudo apt update" ]
+  - [ sh, -c, "sudo echo 'master: 10.0.0.9' | sudo tee /etc/salt/minion" ]
+  - [ sh, -c, "sudo apt -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confnew install salt-minion" ]
